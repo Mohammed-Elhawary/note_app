@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 
 class CustomAppBar extends StatelessWidget {
-  const CustomAppBar({super.key});
+  const CustomAppBar({super.key, required this.title, required this.icon, this.onPressed});
 
+  final String title;
+  final IconData icon;
+  final VoidCallback? onPressed ;
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -10,8 +13,8 @@ class CustomAppBar extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text("Notes", style: TextStyle(fontSize: 30)),
-          IconButton(onPressed: () {}, icon: Icon(Icons.search, size: 30)),
+          Text(title, style: TextStyle(fontSize: 30)),
+          IconButton(onPressed: onPressed, icon: Icon(icon, size: 30)),
         ],
       ),
     );

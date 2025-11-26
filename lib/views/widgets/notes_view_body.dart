@@ -7,6 +7,11 @@ class NotesViewBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(children: [CustomAppBar(), NoteListView()]);
+    return Column(
+      children: [
+        CustomAppBar(title: 'Notes', icon: Icons.search),
+        NoteListView(),
+      ],
+    );
   }
 }
