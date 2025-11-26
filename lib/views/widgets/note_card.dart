@@ -33,7 +33,7 @@ class NoteCard extends StatelessWidget {
                   "Every thing in Flutter is widget",
                   style: TextStyle(
                     fontSize: 20,
-                    color: Colors.black.withOpacity(.5),
+                    color: Colors.black.withOpacity(0.5),
                   ),
                 ),
               ),

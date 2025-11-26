@@ -24,7 +24,7 @@ class HomeScreen extends StatelessWidget {
           );
         },
         backgroundColor: Colors.tealAccent,
-        child: Icon(Icons.add, color: Colors.black),
+        child: Icon (Icons.add, color: Colors.black),
       ),
       body: NotesViewBody(),
     );
