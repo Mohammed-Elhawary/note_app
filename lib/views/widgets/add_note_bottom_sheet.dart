@@ -62,7 +62,8 @@ class _AddFormNoteState extends State<AddFormNote> {
                 await Hive.box(
                   kNotesBox,
                 ).add({'title': title, 'content': content});
-                
+                print("data saved");
+                Navigator.pop(context);
               }else {
                 autovalidateMode = AutovalidateMode.always;
                 setState(() {});
