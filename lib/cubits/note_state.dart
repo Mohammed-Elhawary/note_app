@@ -1,16 +1,15 @@
 part of 'note_cubit.dart';
 
-sealed class NotesState {}
-class NotesInitial extends NotesState {}
+sealed class AddNotesState {}
+class AddNotesInitial extends AddNotesState {}
 
 
-class NotesLoaded extends NotesState {
-  final List notes;
-  NotesLoaded(this.notes);
+class AddNotesLoading extends AddNotesState {
+  AddNotesLoading();
 }
+class AddNotesSuccess extends AddNotesState {}
 
-
-class NotesError extends NotesState {
-  final String message;
-  NotesError(this.message);
+class AddNotesError extends AddNotesState {
+  final String errMessage;
+  AddNotesError(this.errMessage);
 }
