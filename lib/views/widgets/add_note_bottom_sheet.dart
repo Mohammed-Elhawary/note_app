@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:hive/hive.dart';
-import 'package:notes_app/constant.dart';
-import 'package:notes_app/views/widgets/custom_btn.dart';
-import 'package:notes_app/views/widgets/custom_text_field.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
+import 'package:notes_app/cubits/note_cubit.dart';
+import 'package:notes_app/views/widgets/add_form_note_state.dart';
 
 class AddNoteBottomSheet extends StatelessWidget {
   const AddNoteBottomSheet({super.key});
-
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -15,62 +14,29 @@ class AddNoteBottomSheet extends StatelessWidget {
         right: 16,
         bottom: MediaQuery.of(context).viewInsets.bottom,
       ),
-      child: SingleChildScrollView(child: AddFormNote()),
-    );
-  }
-}
+      child: SingleChildScrollView(
+        child: BlocConsumer<AddNoteCubit, AddNoteState>(
+          listener: (context, state) {
+            if (state is AddNotesSuccess) {
+              Navigator.pop(context);
+            } else if (state is AddNotesFailure) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text(state.errMessage),
+                  backgroundColor: Colors.red,
+                ),
+              );
+            }
 
-class AddFormNote extends StatefulWidget {
-  const AddFormNote({super.key});
 
-  @override
-  State<AddFormNote> createState() => _AddFormNoteState();
-}
-
-class _AddFormNoteState extends State<AddFormNote> {
-  GlobalKey<FormState> formKey = GlobalKey();
-  AutovalidateMode autovalidateMode = AutovalidateMode.disabled;
-  String? title, content;
-
-  @override
-  Widget build(BuildContext context) {
-    return Form(
-      key: formKey,
-      autovalidateMode: autovalidateMode,
-      child: Column(
-        children: [
-          SizedBox(height: 24),
-          CustomTextField(
-            onSaved: (value) {
-              title = value;
-            },
-            hintText: 'Title',
-          ),
-          SizedBox(height: 24),
-          CustomTextField(
-            onSaved: (value) {
-              content = value;
-            },
-            hintText: 'Content',
-            maxLines: 5,
-          ),
-          SizedBox(height: 48),
-          CustomBtn(
-            onTap: () async {
-              if (formKey.currentState!.validate()) {
-                formKey.currentState!.save();
-                await Hive.box(
-                  kNotesBox,
-                ).add({'title': title, 'content': content});
-                print("data saved");
-                Navigator.pop(context);
-              }else {
-                autovalidateMode = AutovalidateMode.always;
-                setState(() {});
-              }
-            },
-          ),
-        ],
+          },
+          builder: (context, state) {
+            return ModalProgressHUD(
+              inAsyncCall: state is AddNotesLoading ? true : false,
+              child: AddFormNote(),
+            );
+          },
+        ),
       ),
     );
   }
