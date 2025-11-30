@@ -19,48 +19,50 @@ class _AddFormNoteState extends State<AddFormNote> {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Form(
-        key: formKey,
-        autovalidateMode: autovalidateMode,
-        child: Column(
-          children: [
-            SizedBox(height: 24),
-            CustomTextField(
-              onSaved: (value) {
-                title = value;
-              },
-              hintText: 'Title',
-            ),
-            SizedBox(height: 24),
-            CustomTextField(
-              onSaved: (value) {
-                content = value;
-              },
-              hintText: 'Content',
-              maxLines: 5,
-            ),
-            SizedBox(height: 48),
-            CustomBtn(
-              onTap: () async {
-                if (formKey.currentState!.validate()) {
-                  formKey.currentState!.save();
-                  var noteModel = NoteModel(
-                    title: title!,
-                    content: content!,
-                    date: DateTime.now().toString(),
-                    color: Colors.amber.toARGB32(),
-                  );
-                  BlocProvider.of<AddNoteCubit>(context).addNote(noteModel);
-      
-                } else {
-                  autovalidateMode = AutovalidateMode.always;
-                  setState(() {});
-                }
-              },
-            ),
-          ],
-        ),
+    return Form(
+      key: formKey,
+      autovalidateMode: autovalidateMode,
+      child: Column(
+        children: [
+          SizedBox(height: 24),
+          CustomTextField(
+            onSaved: (value) {
+              title = value;
+            },
+            hintText: 'Title',
+          ),
+          SizedBox(height: 24),
+          CustomTextField(
+            onSaved: (value) {
+              content = value;
+            },
+            hintText: 'Content',
+            maxLines: 5,
+          ),
+          SizedBox(height: 48),
+          BlocBuilder<AddNoteCubit, AddNoteState>(
+            builder: (context, state) {
+              return CustomBtn(
+                isLoading: state is AddNotesLoading ? true :false,
+                onTap: () async {
+                  if (formKey.currentState!.validate()) {
+                    formKey.currentState!.save();
+                    var noteModel = NoteModel(
+                      title: title!,
+                      content: content!,
+                      date: DateTime.now().toString(),
+                      color: Colors.amber.toARGB32(),
+                    );
+                    BlocProvider.of<AddNoteCubit>(context).addNote(noteModel);
+                  } else {
+                    autovalidateMode = AutovalidateMode.always;
+                    setState(() {});
+                  }
+                },
+              );
+            },
+          ),
+        ],
       ),
     );
   }

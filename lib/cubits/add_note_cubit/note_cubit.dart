@@ -8,7 +8,7 @@ class AddNoteCubit extends Cubit<AddNoteState> {
 
   // void loadNotes() async {
   //   try {
-  //     var box = await Hive.openBox('notesBox');
+  //     var box = await Hive.Box('notesBox');
   //     var notes = box.values.toList();
   //     emit(AddNotesLoaded(notes));
   //   } catch (e) {
@@ -18,13 +18,12 @@ class AddNoteCubit extends Cubit<AddNoteState> {
 
   void addNote(NoteModel note) async {
     emit(AddNotesLoading());
-    // try {
-    var notesBox = Hive.box('notes_box');
-    emit(AddNotesSuccess());
-    await notesBox.add(note);
-    // }
-    //  catch (e) {
-    //   emit(AddNotesFailure(e.toString()));
-    // }
+    try {
+      var notesBox = Hive.box('notes_box');
+      await notesBox.add(note);
+      emit(AddNotesSuccess());
+    } catch (e) {
+      emit(AddNotesFailure(e.toString()));
+    }
   }
 }
