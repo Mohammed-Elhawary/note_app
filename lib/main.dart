@@ -7,6 +7,8 @@ import 'package:notes_app/note_bloc_obsrver.dart';
 import 'package:notes_app/views/home_screen.dart';
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
   await Hive.initFlutter();
 
   Bloc.observer = NoteBlocObserver();

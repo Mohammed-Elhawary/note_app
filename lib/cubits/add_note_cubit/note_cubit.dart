@@ -6,20 +6,11 @@ part 'note_state.dart';
 class AddNoteCubit extends Cubit<AddNoteState> {
   AddNoteCubit() : super(AddNotesInitial());
 
-  // void loadNotes() async {
-  //   try {
-  //     var box = await Hive.Box('notesBox');
-  //     var notes = box.values.toList();
-  //     emit(AddNotesLoaded(notes));
-  //   } catch (e) {
-  //     emit(AddNotesError(e.toString()));
-  //   }
-  // }
 
   void addNote(NoteModel note) async {
     emit(AddNotesLoading());
     try {
-      var notesBox = Hive.box('notes_box');
+      var notesBox = Hive.box<NoteModel>('notes_box');
       await notesBox.add(note);
       emit(AddNotesSuccess());
     } catch (e) {
