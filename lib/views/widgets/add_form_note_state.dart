@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:hive/hive.dart';
-import 'package:notes_app/constant.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:notes_app/cubits/add_note_cubit/note_cubit.dart';
+import 'package:notes_app/models/note_model.dart';
 import 'package:notes_app/views/widgets/custom_btn.dart';
 import 'package:notes_app/views/widgets/custom_text_field.dart';
 
@@ -18,43 +19,48 @@ class _AddFormNoteState extends State<AddFormNote> {
 
   @override
   Widget build(BuildContext context) {
-    return Form(
-      key: formKey,
-      autovalidateMode: autovalidateMode,
-      child: Column(
-        children: [
-          SizedBox(height: 24),
-          CustomTextField(
-            onSaved: (value) {
-              title = value;
-            },
-            hintText: 'Title',
-          ),
-          SizedBox(height: 24),
-          CustomTextField(
-            onSaved: (value) {
-              content = value;
-            },
-            hintText: 'Content',
-            maxLines: 5,
-          ),
-          SizedBox(height: 48),
-          CustomBtn(
-            onTap: () async {
-              if (formKey.currentState!.validate()) {
-                formKey.currentState!.save();
-                await Hive.box(
-                  kNotesBox,
-                ).add({'title': title, 'content': content});
-                print("data saved");
-                Navigator.pop(context);
-              } else {
-                autovalidateMode = AutovalidateMode.always;
-                setState(() {});
-              }
-            },
-          ),
-        ],
+    return SingleChildScrollView(
+      child: Form(
+        key: formKey,
+        autovalidateMode: autovalidateMode,
+        child: Column(
+          children: [
+            SizedBox(height: 24),
+            CustomTextField(
+              onSaved: (value) {
+                title = value;
+              },
+              hintText: 'Title',
+            ),
+            SizedBox(height: 24),
+            CustomTextField(
+              onSaved: (value) {
+                content = value;
+              },
+              hintText: 'Content',
+              maxLines: 5,
+            ),
+            SizedBox(height: 48),
+            CustomBtn(
+              onTap: () async {
+                if (formKey.currentState!.validate()) {
+                  formKey.currentState!.save();
+                  var noteModel = NoteModel(
+                    title: title!,
+                    content: content!,
+                    date: DateTime.now().toString(),
+                    color: Colors.amber.toARGB32(),
+                  );
+                  BlocProvider.of<AddNoteCubit>(context).addNote(noteModel);
+      
+                } else {
+                  autovalidateMode = AutovalidateMode.always;
+                  setState(() {});
+                }
+              },
+            ),
+          ],
+        ),
       ),
     );
   }
