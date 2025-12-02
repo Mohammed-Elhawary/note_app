@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+<<<<<<< HEAD
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:notes_app/cubits/add_note_cubit/note_cubit.dart';
+=======
+>>>>>>> a201e9fb628d240c4c79838597789f21b4fb76a2
 
 class ItemColorListView extends StatefulWidget {
   const ItemColorListView({super.key, this.isSelected = false});
@@ -38,9 +41,15 @@ class _ItemColorListViewState extends State<ItemColorListView> {
               color: colors[index],
               isSelected: currentIndex == index,
               onTap: () {
+<<<<<<< HEAD
                 currentIndex = index;
                 BlocProvider.of<AddNoteCubit>(context).color = colors[index];
                 setState(() {});
+=======
+                setState(() {
+                  currentIndex = index;
+                });
+>>>>>>> a201e9fb628d240c4c79838597789f21b4fb76a2
               },
             ),
           );
