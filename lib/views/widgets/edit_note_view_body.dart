@@ -5,6 +5,7 @@ import 'package:notes_app/models/note_model.dart';
 import 'package:notes_app/views/widgets/custom_app_bar.dart';
 import 'package:notes_app/views/widgets/custom_btn.dart';
 import 'package:notes_app/views/widgets/custom_text_field.dart';
+import 'package:notes_app/views/widgets/item_color.dart';
 
 class EditNoteViewBody extends StatefulWidget {
   const EditNoteViewBody({super.key, required this.note});
@@ -21,7 +22,7 @@ class _EditNoteViewBodyState extends State<EditNoteViewBody> {
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16.0),
-        child: Column(
+        child: ListView(
           children: [
             CustomAppBar(
               title: 'Edit Note',
@@ -49,8 +50,8 @@ class _EditNoteViewBodyState extends State<EditNoteViewBody> {
               maxLines: 5,
               onChange: (value) => content = value,
             ),
-            SizedBox(height: 48),
-            // Add other widgets for editing note here
+            SizedBox(height: 12),
+            SizedBox(height: 40, child: ItemColorListView()),
           ],
         ),
       ),
